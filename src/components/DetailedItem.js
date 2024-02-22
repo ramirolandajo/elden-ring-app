@@ -3,10 +3,11 @@ import React from 'react'
 import {colors} from "../global/colors";
 import {AntDesign} from "@expo/vector-icons";
 
-export default function DetailedItem({item, setSelectedItem}) {
+export default function DetailedItem({item, navigation}) {
+
     return (
         <View style={styles.container}>
-            <Pressable onPress={() => setSelectedItem(null)} style={{marginBottom: 16}}>
+            <Pressable onPress={() => navigation.goBack()} style={{marginBottom: 16}}>
                 <AntDesign name={"leftcircle"} size={32} color={colors.gold_200}/>
             </Pressable>
             <ScrollView contentContainerStyle={styles.main} showsVerticalScrollIndicator={false}>

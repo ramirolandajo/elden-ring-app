@@ -2,9 +2,10 @@ import {Image, Pressable, StyleSheet, Text, View} from 'react-native'
 import React from 'react'
 import Card from "./Card";
 
-export default function Item({itemName, itemImage, setSelectedItem, data, id}) {
+export default function Item({itemName, itemImage, navigation, data, id}) {
+    const item = data[id]
     return (
-        <Pressable onPress={() => setSelectedItem(data[id])}>
+        <Pressable onPress={() => navigation.navigate("DetailedItemScreen", {item})}>
             <Card style={styles.main}>
                 <Text style={styles.itemName}>{itemName}</Text>
                 <Image source={{uri: itemImage}} style={styles.image}/>

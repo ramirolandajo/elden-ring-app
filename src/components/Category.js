@@ -2,9 +2,9 @@ import {Pressable, StyleSheet, Text} from 'react-native'
 import React from 'react'
 import Card from "./Card";
 
-export default function Category({categoryName, setScreen}) {
+export default function Category({categoryName, navigation}) {
     return (
-        <Pressable onPress={() => setScreen(categoryName)}>
+        <Pressable onPress={() => navigation.navigate("ItemList", {categoryName})}>
             <Card>
                 <Text style={styles.categoryName}>{categoryName}</Text>
             </Card>

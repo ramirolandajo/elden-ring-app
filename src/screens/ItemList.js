@@ -1,17 +1,28 @@
-import {FlatList, Pressable, StyleSheet, Text, View} from 'react-native'
+import {
+    Dimensions,
+    FlatList,
+    Image,
+    Platform,
+    Pressable,
+    SafeAreaView,
+    StatusBar,
+    StyleSheet,
+    Text,
+    View
+} from 'react-native'
 import React, {useEffect, useState} from 'react'
 import Item from "../components/Item";
 import {colors} from "../global/colors";
 import {AntDesign} from '@expo/vector-icons';
-import DetailedItem from "../components/DetailedItem";
+import Constants from "expo-constants";
 
-export default function ItemList({category, fetchURL, setScreen}) {
+export default function ItemList({navigation, route}) {
 
     const [data, setData] = useState([])
-    const [selectedItem, setSelectedItem] = useState(null)
+    const {categoryName} = route.params;
 
     useEffect(() => {
-        fetch(`${fetchURL}?limit=100`)
+        fetch(`https://eldenring.fanapis.com/api/${categoryName}?limit=100`)
             .then((res) => res.json())
             .then((parsedData) => {
                 setData(parsedData.data)
@@ -19,25 +30,28 @@ export default function ItemList({category, fetchURL, setScreen}) {
             .catch((error) => console.error(error))
     }, []);
 
-    return (selectedItem) ? (
-        <DetailedItem item={selectedItem} setSelectedItem={setSelectedItem}/>
-    ) : (
-        <View>
+    return (
+        <SafeAreaView style={styles.container}>
+
             <View style={styles.header}>
-                <Pressable onPress={() => setScreen("")}>
+                <Pressable onPress={() => navigation.goBack()}>
                     <AntDesign name={"leftcircle"} size={32} color={colors.gold_200}/>
                 </Pressable>
-                <Text style={styles.categoryTitle}>{category}</Text>
+                <Text style={styles.categoryTitle}>{categoryName}</Text>
             </View>
             <FlatList
                 data={data}
                 renderItem={({item}) => (
-                    <Item itemName={item.name} itemImage={item.image} setSelectedItem={setSelectedItem}
-                          id={data.indexOf(item)} data={data}/>
+                    <Item
+                        itemName={item.name}
+                        itemImage={item.image}
+                        navigation={navigation}
+                        id={data.indexOf(item)}
+                        data={data}/>
                 )}
                 keyExtractor={(item) => item.id}
             />
-        </View>
+        </SafeAreaView>
     )
 }
 const styles = StyleSheet.create({
@@ -53,5 +67,15 @@ const styles = StyleSheet.create({
         fontFamily: "Elden",
         color: colors.gold_200,
         marginLeft: 20
+    },
+    container: {
+        flex: 1,
+        backgroundColor: colors.main_black,
+        paddingTop: Platform.OS === 'android' ? Constants.statusBarHeight : 0,
+    },
+    logo: {
+        width: Dimensions.get("window").width,
+        height: "15%",
+        resizeMode: 'contain'
     }
 })

@@ -1,23 +1,28 @@
-import {FlatList, StyleSheet, Text, View} from 'react-native'
+import {FlatList, Platform, SafeAreaView, StyleSheet} from 'react-native'
 import React from 'react'
 import categories from '../data/categories.json';
 import Category from "../components/Category";
-export default function CategoryList({setScreen}) {
+import {colors} from "../global/colors";
+import Constants from "expo-constants";
+
+export default function CategoryList({navigation}) {
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <FlatList
                 data={categories}
                 renderItem={({item}) => (
-                    <Category categoryName={item} setScreen={setScreen}/>
+                    <Category categoryName={item} navigation={navigation}/>
                 )}
                 keyExtractor={(item) => item}
                 showsVerticalScrollIndicator={false}
             />
-        </View>
+        </SafeAreaView>
     )
 }
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        backgroundColor: colors.main_black,
+        paddingTop: Platform.OS === 'android' ? Constants.statusBarHeight : 0,
     }
 })
