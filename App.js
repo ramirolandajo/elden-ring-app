@@ -1,6 +1,8 @@
 import {fonts} from "./src/global/fonts";
 import {useFonts} from 'expo-font';
-import MainStack from "./src/navigation/MainStack";
+import {Provider} from "react-redux";
+import store from "./src/store";
+import TabNavigator from "./src/navigation/TabNavigator";
 
 export default function App() {
 
@@ -10,5 +12,9 @@ export default function App() {
         return null;
     }
 
-    return <MainStack/>
+    return (
+        <Provider store={store}>
+            <TabNavigator/>
+        </Provider>
+    )
 }
